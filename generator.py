@@ -64,7 +64,7 @@ if __name__ == '__main__':
                     <meta property="og:title" content="{first_date[0:4]} 年 {int(first_date[4:6])} 月 {int(first_date[6:8])} 日"/>
                     <meta property="twitter:card" content="summary" />
                     <meta property="twitter:image" content="https://diary.199024.club/test.jpg" />
-                    <link rel="icon" href="test.jpg">
+                    <link rel="icon" href="https://diary.199024.club/test.jpg">
                     <title>日記</title>
                     <link rel="stylesheet" type="text/css" href="style.css">
                 </head>
