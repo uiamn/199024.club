@@ -52,13 +52,23 @@ def append_dom(filepath: str, outfile: TextIOWrapper) -> str:
 
 if __name__ == '__main__':
     all_content_path = sorted(get_all_content_path(), reverse=True)
+    first_date = all_content_path[0].split('/')[-1]
 
     with open('index.html', 'w') as f:
-        f.write('')
+        f.write(f'''
+            <!DOCTYPE html><html>
+                <head>
+                    <meta charset="utf-8">
+                    <meta property="og:site_name" content="日記" />
+                    <meta property="og:title" content="{first_date[0:4]} 年 {int(first_date[4:6])} 月 {int(first_date[6:8])} 日"/>
+                    <title>日記</title>
+                    <link rel="stylesheet" type="text/css" href="style.css">
+                </head>
+                <body>
+                    <div>
+        ''')
 
     with open('index.html', 'a') as f:
-        f.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>日記</title><link rel="stylesheet" type="text/css" href="style.css"></head><body><div>')
-
         for cp in all_content_path:
             append_dom(cp, f)
 
