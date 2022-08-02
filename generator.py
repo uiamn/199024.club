@@ -60,11 +60,11 @@ if __name__ == '__main__':
                 <head>
                     <meta charset="utf-8">
                     <meta property="og:site_name" content="日記" />
-                    <meta property="og:image" content="https://diary.199024.club/test.gif" />
+                    <meta property="og:image" content="https://diary.199024.club/test.jpg" />
                     <meta property="og:title" content="{first_date[0:4]} 年 {int(first_date[4:6])} 月 {int(first_date[6:8])} 日"/>
                     <meta property="twitter:card" content="summary" />
-                    <meta property="twitter:image" content="https://diary.199024.club/test.gif" />
-                    <link rel="icon" href="test.gif">
+                    <meta property="twitter:image" content="https://diary.199024.club/test.jpg" />
+                    <link rel="icon" href="test.jpg">
                     <title>日記</title>
                     <link rel="stylesheet" type="text/css" href="style.css">
                 </head>
