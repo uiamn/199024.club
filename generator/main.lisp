@@ -63,10 +63,7 @@
 (defun path-to-date (entry-path) (
     let ((filename (file-namestring entry-path))) (
         concatenate 'string
-            (string (aref filename 0))
-            (string (aref filename 1))
-            (string (aref filename 2))
-            (string (aref filename 3))
+            (subseq filename 0 4)
             " 年 "
             (
                 let ((c (aref filename 4))) (
