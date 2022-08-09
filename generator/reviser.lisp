@@ -16,7 +16,6 @@
     map 'string 'replace-pronunciation-sub line
 ))
 
-
 (defun revise (line) (
     let ((revised line))
         (setq revised (replace-pronunciation revised))
