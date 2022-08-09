@@ -1,3 +1,5 @@
+(load "reviser.lisp")
+
 (defun all-content-path () (
     sort (directory "../content/**/????????") #'string> :key #'pathname-name
 ))
@@ -93,6 +95,7 @@
                 (if (string= line "")
                     ()
                     (progn
+                        (setq line (revise line))
                         (setq top-spaces (count-top-spaces (coerce line 'list) 0))
                         (nconc lines (list (generate-line line top-spaces top-spaces-stack)))
                         (setq top-spaces-stack (next-top-spaces-stack top-spaces top-spaces-stack))
