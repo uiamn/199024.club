@@ -124,7 +124,7 @@
 
 (
     with-open-file
-        (outs "index.html" :direction :output)
+        (outs "../index.html" :direction :output)
         (princ (generate-header (all-content-path)) outs)
         (princ "<body><div>" outs)
         (dolist (path (all-content-path)) (
