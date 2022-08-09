@@ -1,4 +1,5 @@
 (load "reviser.lisp")
+(load "header-generator.lisp")
 
 (defun all-content-path () (
     sort (directory "../content/**/????????") #'string> :key #'pathname-name
@@ -122,8 +123,6 @@
             <title>日記</title>
             <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">
         </head>
-        <body>
-            <div>
     "
     out-stream
 ))
@@ -135,7 +134,8 @@
 (
     with-open-file
         (outs "index.html" :direction :output)
-        (write-header outs)
+        (princ (generate-header) outs)
+        (princ "<body><div>" outs)
         (dolist (path (all-content-path)) (
             dolist (line (generate-entry-div path)) (
                 princ line outs
