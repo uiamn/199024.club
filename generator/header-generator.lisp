@@ -13,10 +13,30 @@
     "
 )
 
+(defun zero-trim-str (n) (
+    if (>= n 10)
+        (princ-to-string n)
+        (concatenate 'string "0" (princ-to-string n))
+))
 
-(defun generate-header () (
+(defun link-in-page (entries-paths) (
+    if (null entries-paths)
+        ""
+        (concatenate 'string
+            (link-in-page (cdr entries-paths))
+            "<a href=\"#day"
+            (subseq (file-namestring (car entries-paths)) 6 8)
+            "\">"
+            (string-left-trim '(#\0) (subseq (file-namestring (car entries-paths)) 6 8))
+            "</a> "
+        )
+))
+
+
+(defun generate-header (entries-paths) (
     let ((header "<!DOCTYPE html><html><head>"))
         (setq header (concatenate 'string header (basic-elements)))
+        (setq header (concatenate 'string header (link-in-page entries-paths)))
         (setq header (concatenate 'string header "</head>"))
         header
 ))

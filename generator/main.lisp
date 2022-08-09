@@ -63,7 +63,7 @@
         (t (next-top-spaces-stack top-spaces (cdr top-spaces-stack)))
 ))
 
-(defun path-to-date (entry-path) (
+(defun path-to-date-text (entry-path) (
     let ((filename (file-namestring entry-path))) (
         concatenate 'string
             (subseq filename 0 4)
@@ -85,10 +85,21 @@
     )
 ))
 
+(defun path-to-day (entry-path) (
+))
+
 (defun generate-entry-div (entry-path) (
     with-open-file (f entry-path :direction :input) (
         let (
-            (lines (list (concatenate 'string "<div class=\"entry\"><h2>■ " (path-to-date entry-path) "</h2>")))
+            (lines (list (
+                concatenate 'string
+                    "<div class=\"entry\" id=\"day"
+                    (subseq (file-namestring entry-path) 6 8)
+                    "\"><h2>■ "
+                    (path-to-date-text entry-path)
+                    "</h2>"
+                )
+            ))
             (top-spaces-stack '(0))
             (top-spaces nil)
         )
@@ -114,7 +125,7 @@
 (
     with-open-file
         (outs "index.html" :direction :output)
-        (princ (generate-header) outs)
+        (princ (generate-header (all-content-path)) outs)
         (princ "<body><div>" outs)
         (dolist (path (all-content-path)) (
             dolist (line (generate-entry-div path)) (
