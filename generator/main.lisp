@@ -2,7 +2,7 @@
 (load "header-generator.lisp")
 
 (defun all-content-path () (
-    sort (directory "../content/**/????????") #'string> :key #'pathname-name
+    sort (directory (concatenate 'string (car *args*) "/**/????????")) #'string> :key #'pathname-name
 ))
 
 (defun count-top-spaces (line n) (
@@ -124,7 +124,7 @@
 
 (
     with-open-file
-        (outs "../index.html" :direction :output)
+        (outs (cadr *args*) :direction :output)
         (princ (generate-header (all-content-path)) outs)
         (princ "<body><div>" outs)
         (dolist (path (all-content-path)) (
