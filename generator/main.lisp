@@ -1,5 +1,5 @@
-(load "reviser.lisp")
-(load "header-generator.lisp")
+(load "generator/reviser.lisp")
+(load "generator/header-generator.lisp")
 
 (defun all-content-path () (
     sort (directory (concatenate 'string (car *args*) "/**/????????")) #'string> :key #'pathname-name
