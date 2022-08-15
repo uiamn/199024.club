@@ -2,7 +2,12 @@ body {
     font-family: "ＭＳ ゴシック", "Hiragino Sans W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 }
 
+h2 {
+    margin-bottom: 0;
+}
+
 h3 {
+    margin-top: 0;
     margin-bottom: 0;
 }
 
