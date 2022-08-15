@@ -1,7 +1,8 @@
 CLISP = /usr/bin/clisp
+THIS_MONTH_CONTENTS := $(shell ls content/????????)
 
-all: generator.fas generator.lib
-	clisp generator.fas content index.html
+index.html: generator.fas generator.lib $(THIS_MONTH_CONTENTS)
+	clisp $< content index.html
 
 generator.fas generator.lib: generator/main.lisp
-	clisp -c generator/main.lisp -o generator
+	clisp -c $< -o generator
