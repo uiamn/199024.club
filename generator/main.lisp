@@ -89,6 +89,29 @@
 (defun path-to-day (entry-path) (
 ))
 
+(defun generate-entry-tree (entry-path) (
+    with-open-file (f entry-path :direction :input) (
+        let (
+            (div (make-node))
+            (top-spaces-stack '(0))
+            (top-spaces nil)
+        )
+        (loop for line = (read-line f nil) while line do
+            (if (string= line "")
+                ()
+                (progn
+                    (setq line (revise line))
+                    (setq top-spaces (count-top-spaces (coerce line 'list) 0))
+                    (nconc lines (list (generate-line line top-spaces top-spaces-stack)))
+                    (setq top-spaces-stack (next-top-spaces-stack top-spaces top-spaces-stack))
+                )
+            )
+        )
+        (nconc lines (list (generate-end-ul 0 top-spaces-stack) "</div></div>"))
+    )
+))
+
+
 (defun generate-entry-div (entry-path) (
     with-open-file (f entry-path :direction :input) (
         let (
