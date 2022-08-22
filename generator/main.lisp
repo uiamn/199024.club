@@ -1,5 +1,6 @@
 (load "generator/reviser.lisp")
 (load "generator/header-generator.lisp")
+(load "generator/structs.lisp")
 
 (defun all-content-path () (
     sort (directory (concatenate 'string (car *args*) "/**/????????")) #'string> :key #'pathname-name
@@ -91,6 +92,11 @@
 (defun generate-entry-div (entry-path) (
     with-open-file (f entry-path :direction :input) (
         let (
+            (div (make-node
+                :tag "div"
+                :attributes (list (list "class" "entry") (list "id" (concatenate 'string "day" (subseq (file-namestring entry-path) 6 8))))
+                :children (make-node :tag "h2" :text (concatenate 'string "■ " (path-to-date-text entry-path)))
+            ))
             (lines (list (
                 concatenate 'string
                     "<div class=\"entry\" id=\"day"
@@ -103,18 +109,18 @@
             (top-spaces-stack '(0))
             (top-spaces nil)
         )
-            (loop for line = (read-line f nil) while line do
-                (if (string= line "")
-                    ()
-                    (progn
-                        (setq line (revise line))
-                        (setq top-spaces (count-top-spaces (coerce line 'list) 0))
-                        (nconc lines (list (generate-line line top-spaces top-spaces-stack)))
-                        (setq top-spaces-stack (next-top-spaces-stack top-spaces top-spaces-stack))
-                    )
-                )
-            )
-            (nconc lines (list (generate-end-ul 0 top-spaces-stack) "</div></div>"))
+            ;; (loop for line = (read-line f nil) while line do
+            ;;     (if (string= line "")
+            ;;         ()
+            ;;         (progn
+            ;;             (setq line (revise line))
+            ;;             (setq top-spaces (count-top-spaces (coerce line 'list) 0))
+            ;;             (nconc lines (list (generate-line line top-spaces top-spaces-stack)))
+            ;;             (setq top-spaces-stack (next-top-spaces-stack top-spaces top-spaces-stack))
+            ;;         )
+            ;;     )
+            ;; )
+            ;; (nconc lines (list (generate-end-ul 0 top-spaces-stack) "</div></div>"))
     )
 ))
 
@@ -122,15 +128,20 @@
     princ "</div></body></html>" out-stream
 ))
 
+;; (
+;;     with-open-file
+;;         (outs (cadr *args*) :direction :output)
+;;         (princ (generate-header (all-content-path)) outs)
+;;         (princ "<body><div>" outs)
+;;         (dolist (path (all-content-path)) (
+;;             dolist (line (generate-entry-div path)) (
+;;                 princ line outs
+;;             )
+;;         ))
+;;         (write-footer outs)
+;; )
+
+
 (
-    with-open-file
-        (outs (cadr *args*) :direction :output)
-        (princ (generate-header (all-content-path)) outs)
-        (princ "<body><div>" outs)
-        (dolist (path (all-content-path)) (
-            dolist (line (generate-entry-div path)) (
-                princ line outs
-            )
-        ))
-        (write-footer outs)
+    princ (generate-entry-div (car (all-content-path)))
 )
