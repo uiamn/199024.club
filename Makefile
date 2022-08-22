@@ -1,7 +1,7 @@
 CLISP = /usr/bin/clisp
 THIS_MONTH_CONTENTS := $(shell ls content/????????)
 
-index.html: generator.fas generator.lib $(THIS_MONTH_CONTENTS)
+index.html: generator.fas generator.lib $(THIS_MONTH_CONTENTS) style.css
 	clisp $< content index.html
 
 deploy: index.html

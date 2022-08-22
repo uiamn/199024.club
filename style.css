@@ -6,8 +6,12 @@ h2 {
     margin-bottom: 0;
 }
 
-h3 {
+.entry h3:first-of-type {
     margin-top: 0;
+}
+
+h3 {
+    margin-top: 1em;
     margin-bottom: 0;
 }
 
