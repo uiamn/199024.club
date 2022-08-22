@@ -70,14 +70,14 @@
             " 年 "
             (
                 let ((c (aref filename 4))) (
-                    if (eq c #\0) "" "1"
+                    if (eq c #\0) "" (string c)
                 )
             )
             (string (aref filename 5))
             " 月 "
             (
                 let ((c (aref filename 6))) (
-                    if (eq c #\0) "" "1"
+                    if (eq c #\0) "" (string c)
                 )
             )
             (string (aref filename 7))
