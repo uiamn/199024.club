@@ -5,7 +5,7 @@
     勉学
         典型 90 を 1 問解いた．
             <a href="https://atcoder.jp/contests/typical90/tasks/typical90_ad">30 K Factors</a>: 高速素因数分解でググったら複数の素因数分解のクエリを効率的に行なふ smallest prime factors といふ手法を見つけた．
-                はじめに 2 から N までのそれぞれの整数に対して，その整数の持つ最小の素因数のテーブルを作る（これは O(N log N) でできる）．するとこの範囲にある任意の整数 m の素因数分解が O(log m) で完了する．
+                はじめに 2 から N までのそれぞれの整数に対して，その整数の持つ最小の素因数のテイブルを作る（これは O(N log N) でできる）．するとこの範囲にある任意の整数 m の素因数分解が O(log m) で完了する．
                 今回は 2 から N までの全部の数がクエリとして与へられる場合と考へられるが，結局 O(N log N) で十分間に合ふ．
                 参考: https://qiita.com/ganyariya/items/fba261ee53a5b6decc47
                     写経の際に factolization に与へる &spf を spf としたら非常に遅くなった．
