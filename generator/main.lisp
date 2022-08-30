@@ -1,5 +1,6 @@
 (load "generator/reviser.lisp")
 (load "generator/header-generator.lisp")
+(load "generator/footer-generator.lisp")
 
 (defun all-content-path () (
     sort (directory (concatenate 'string (car *args*) "/**/????????")) #'string> :key #'pathname-name
@@ -12,49 +13,6 @@
 ))
 
 (defun top-spaces-trim (line) (string-left-trim '(#\Space) line))
-
-
-(defun generate-line-sub (line top-spaces) (
-    if (eq top-spaces 0)
-        (concatenate 'string "<h3>" (top-spaces-trim line) "</h3><div>")
-        (concatenate 'string "<li>" (top-spaces-trim line) "</li>")
-))
-
-(defun generate-line-sub-indent (line top-spaces) (
-    concatenate 'string "<ul><li>" (top-spaces-trim line) "</li>"
-))
-
-(defun generate-end-ul (top-spaces top-spaces-stack) (
-    if (eq top-spaces (car top-spaces-stack))
-        "</ul>"
-        (progn
-            (pop top-spaces-stack)
-            (concatenate 'string "</ul>" (generate-end-ul top-spaces top-spaces-stack))
-        )
-))
-
-(defun generate-line-sub-dedent (line top-spaces top-spaces-stack) (
-    progn
-        (pop top-spaces-stack)
-        (concatenate 'string
-            (generate-end-ul top-spaces top-spaces-stack)
-            (if (eq top-spaces 0)
-                (concatenate 'string "</div><h3>" (top-spaces-trim line) "</h3><div>")
-                (concatenate 'string "<li>" (top-spaces-trim line) "</li>")
-            )
-        )
-))
-
-(defun generate-line (line top-spaces top-spaces-stack) (
-    if (string= line "")
-        ""
-        (cond
-            ((eq top-spaces (car top-spaces-stack)) (generate-line-sub line top-spaces))
-            ((> top-spaces (car top-spaces-stack)) (generate-line-sub-indent line top-spaces))
-            (t (generate-line-sub-dedent line top-spaces top-spaces-stack))
-        )
-
-))
 
 (defun next-top-spaces-stack (top-spaces top-spaces-stack) (
     cond
@@ -85,41 +43,77 @@
     )
 ))
 
-(defun path-to-day (entry-path) (
+(defstruct token (is-indent nil) (is-dedent nil) (text nil))
+
+(defun make-text-token (rawline) (
+    make-token :text (revise (top-spaces-trim rawline))
+))
+
+(defun repeat (elm n result)
+    (cons elm (if (= n 1) nil (repeat elm (1- n) result)))
+)
+
+(defun parse (entry-path) (
+    with-open-file (f entry-path :direction :input)
+        (
+            let (
+                (tokens nil)
+                (top-spaces-stack '(0))
+                (top-spaces nil)
+                (old-top-spaces-stack-size 0)
+            )
+                (loop for line = (read-line f nil) while line do
+                    (if (string= line "")
+                        ()
+                        (progn
+                            (setq top-spaces (count-top-spaces (coerce line 'list) 0))
+                            (setq old-top-spaces-stack-size (length top-spaces-stack))
+                            (setq top-spaces-stack (next-top-spaces-stack top-spaces top-spaces-stack))
+                            (cond
+                                (
+                                    (= old-top-spaces-stack-size (length top-spaces-stack))
+                                        (setq tokens (append tokens (list (make-text-token line))))
+                                )
+                                (
+                                    (< old-top-spaces-stack-size (length top-spaces-stack))
+                                        (setq tokens (append tokens (list (make-token :is-indent t) (make-text-token line))))
+                                )
+                                (   t
+                                        (setq tokens (append
+                                            tokens
+                                            (repeat (make-token :is-dedent t) (- old-top-spaces-stack-size (length top-spaces-stack) ) nil)
+                                            (list (make-text-token line))
+                                        ))
+                                )
+                            )
+                        )
+                    )
+                )
+                (setq tokens (append tokens (repeat (make-token :is-dedent t) (1- (length top-spaces-stack)) nil)))
+                tokens
+        )
+))
+
+(defun generate-div-inner (parsed depth) (
+    cond
+        ((null parsed) "")
+        ((token-is-indent (car parsed)) (concatenate 'string "<ul>" (generate-div-inner (cdr parsed) (1+ depth))))
+        ((token-is-dedent (car parsed)) (concatenate 'string "</ul>" (generate-div-inner (cdr parsed) (1- depth))))
+        ((= depth 0) (concatenate 'string "<h3>" (token-text (car parsed)) "</h3>" (generate-div-inner (cdr parsed) depth)))
+        (t (concatenate 'string "<li>" (token-text (car parsed)) "</li>" (generate-div-inner (cdr parsed) depth)))
 ))
 
 (defun generate-entry-div (entry-path) (
     with-open-file (f entry-path :direction :input) (
-        let (
-            (lines (list (
-                concatenate 'string
-                    "<div class=\"entry\" id=\"day"
-                    (subseq (file-namestring entry-path) 6 8)
-                    "\"><h2>■ "
-                    (path-to-date-text entry-path)
-                    "</h2>"
-                )
-            ))
-            (top-spaces-stack '(0))
-            (top-spaces nil)
-        )
-            (loop for line = (read-line f nil) while line do
-                (if (string= line "")
-                    ()
-                    (progn
-                        (setq line (revise line))
-                        (setq top-spaces (count-top-spaces (coerce line 'list) 0))
-                        (nconc lines (list (generate-line line top-spaces top-spaces-stack)))
-                        (setq top-spaces-stack (next-top-spaces-stack top-spaces top-spaces-stack))
-                    )
-                )
-            )
-            (nconc lines (list (generate-end-ul 0 top-spaces-stack) "</div></div>"))
+        concatenate 'string
+            "<div class=\"entry\" id=\"day"
+            (subseq (file-namestring entry-path) 6 8)
+            "\"><h2>■ "
+            (path-to-date-text entry-path)
+            "</h2>"
+            (generate-div-inner (parse entry-path) 0)
+            "</div>"
     )
-))
-
-(defun write-footer (out-stream) (
-    princ "</div></body></html>" out-stream
 ))
 
 (
@@ -128,9 +122,7 @@
         (princ (generate-header (all-content-path)) outs)
         (princ "<body><div>" outs)
         (dolist (path (all-content-path)) (
-            dolist (line (generate-entry-div path)) (
-                princ line outs
-            )
+            princ (generate-entry-div path) outs
         ))
-        (write-footer outs)
+        (princ (generate-footer) outs)
 )
