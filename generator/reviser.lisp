@@ -21,3 +21,25 @@
         (setq revised (replace-pronunciation revised))
         revised
 ))
+
+(defun split-sub (str chr tmp) (
+    cond
+        ((string= str "") (cons tmp nil))
+        ((eq (char str 0) chr) (cons tmp (split-sub (subseq str 1) chr "")))
+        (t (split-sub (subseq str 1) chr (concatenate 'string tmp (subseq str 0 1))))
+))
+
+(defun split (str separator) (
+    split-sub str separator ""
+))
+
+(defun image-token (text) (
+    ;; TODO
+))
+
+
+(defun special-token (token) (
+    cond
+        ;; ((string= "!img" (subseq (token-text token) 0 4)) (image-token token))
+        (t (subseq (token-text token) 1))
+))

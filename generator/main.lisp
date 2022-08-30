@@ -52,7 +52,7 @@
     )
         (make-token
             :is-special is-special
-            :text (if is-special (subseq trimmed 1) (revise trimmed))
+            :text (if is-special trimmed (revise trimmed))
         )
 ))
 
@@ -106,7 +106,7 @@
         ((null parsed) "")
         ((token-is-indent (car parsed)) (concatenate 'string "<ul>" (generate-div-inner (cdr parsed) (1+ depth))))
         ((token-is-dedent (car parsed)) (concatenate 'string "</ul>" (generate-div-inner (cdr parsed) (1- depth))))
-        ((token-is-special (car parsed)) (concatenate 'string (token-text (car parsed)) (generate-div-inner (cdr parsed) depth)))
+        ((token-is-special (car parsed)) (concatenate 'string (special-token (car parsed)) (generate-div-inner (cdr parsed) depth)))
         ((= depth 0) (concatenate 'string "<h3>" (token-text (car parsed)) "</h3>" (generate-div-inner (cdr parsed) depth)))
         (t (concatenate 'string "<li>" (token-text (car parsed)) "</li>" (generate-div-inner (cdr parsed) depth)))
 ))
