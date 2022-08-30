@@ -7,8 +7,8 @@
 ))
 
 (defun count-top-spaces (line n) (
-    if (eq (car line) #\Space)
-        (count-top-spaces (cdr line) (1+ n))
+    if (eq (char line 0) #\Space)
+        (count-top-spaces (subseq line 1) (1+ n))
         n
 ))
 
@@ -43,10 +43,17 @@
     )
 ))
 
-(defstruct token (is-indent nil) (is-dedent nil) (text nil))
+(defstruct token (is-indent nil) (is-dedent nil) (is-special nil) (text nil))
 
 (defun make-text-token (rawline) (
-    make-token :text (revise (top-spaces-trim rawline))
+    let* (
+        (trimmed (top-spaces-trim rawline))
+        (is-special (eq (char trimmed 0) #\!))
+    )
+        (make-token
+            :is-special is-special
+            :text (if is-special (subseq trimmed 1) (revise trimmed))
+        )
 ))
 
 (defun repeat (elm n result)
@@ -66,7 +73,7 @@
                     (if (string= line "")
                         ()
                         (progn
-                            (setq top-spaces (count-top-spaces (coerce line 'list) 0))
+                            (setq top-spaces (count-top-spaces line 0))
                             (setq old-top-spaces-stack-size (length top-spaces-stack))
                             (setq top-spaces-stack (next-top-spaces-stack top-spaces top-spaces-stack))
                             (cond
@@ -99,6 +106,7 @@
         ((null parsed) "")
         ((token-is-indent (car parsed)) (concatenate 'string "<ul>" (generate-div-inner (cdr parsed) (1+ depth))))
         ((token-is-dedent (car parsed)) (concatenate 'string "</ul>" (generate-div-inner (cdr parsed) (1- depth))))
+        ((token-is-special (car parsed)) (concatenate 'string (token-text (car parsed)) (generate-div-inner (cdr parsed) depth)))
         ((= depth 0) (concatenate 'string "<h3>" (token-text (car parsed)) "</h3>" (generate-div-inner (cdr parsed) depth)))
         (t (concatenate 'string "<li>" (token-text (car parsed)) "</li>" (generate-div-inner (cdr parsed) depth)))
 ))
