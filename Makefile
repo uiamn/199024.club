@@ -4,8 +4,8 @@ THIS_MONTH_CONTENTS := $(shell ls content/????????)
 public/diary/index.html: generator.fas generator.lib $(THIS_MONTH_CONTENTS)
 	$(CLISP) $< content public/diary/index.html
 
-deploy: index.html style.css
-	git add index.html content
+deploy: public/diary/index.html
+	git add public/diary/index.html content
 	git commit -m "deploy"
 	git push
 
