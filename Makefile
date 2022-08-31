@@ -1,4 +1,4 @@
-CLISP = /usr/bin/clisp
+CLISP = /usr/bin/clisp -m 1024MB
 THIS_MONTH_CONTENTS := $(shell ls content/????????)
 OLD_CONTENTS := $(shell ls content/**/????????)
 

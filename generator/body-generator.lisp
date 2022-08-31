@@ -106,6 +106,7 @@
 ))
 
 (defun generate-entry-div (entry-path) (
+    ;; generate a div for a entry whose path is entry-path
     with-open-file (f entry-path :direction :input) (
         concatenate 'string
             "<div class=\"entry\" id=\"day"
