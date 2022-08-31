@@ -1,8 +1,9 @@
 CLISP = /usr/bin/clisp
 THIS_MONTH_CONTENTS := $(shell ls content/????????)
+OLD_CONTENTS := $(shell ls content/**/????????)
 
 public/diary/index.html: generator.fas generator.lib $(THIS_MONTH_CONTENTS)
-	$(CLISP) $< content public/diary/index.html
+	$(CLISP) $< content public/diary/
 
 deploy: index.html style.css
 	git add index.html content
