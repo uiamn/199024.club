@@ -1,8 +1,7 @@
 CLISP = /usr/bin/clisp -m 1024MB
-THIS_MONTH_CONTENTS := $(shell ls content/????????)
-OLD_CONTENTS := $(shell ls content/**/????????)
+CONTENTS := $(shell ls content/???????? content/**/????????)
 
-public/diary/index.html: generator.fas generator.lib $(THIS_MONTH_CONTENTS)
+public/diary/index.html: generator.fas generator.lib $(CONTENTS)
 	$(CLISP) $< content public/diary/
 
 deploy: index.html style.css
