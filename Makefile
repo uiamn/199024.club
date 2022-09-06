@@ -8,7 +8,7 @@ public/diary/index.html: generator.fas generator.lib $(THIS_MONTH_CONTENTS)
 	$(CLISP) $< content public/diary/
 
 deploy: public/diary/index.html
-	git add public/diary/index.html content
+	git add public/diary/*.html content
 	git commit -m "deploy"
 	git push
 
