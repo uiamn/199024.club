@@ -28,3 +28,9 @@ ul {
 .entry {
     margin-bottom: 4em;
 }
+
+img {
+    width: auto;
+    max-width: 50%;
+    max-height: 15rem;
+}
