@@ -1,0 +1,18 @@
+やつたこと
+    進捗報告
+    ゼミ
+    牌効率練習機の開発
+        React で SVG ファイルをインポートしたときに， React's JSX doesn't support namespace tags. エラーが出た．
+        SVG ファイルに余計な情報が入ってるのが悪いらしい？
+            参考: https://github.com/facebook/create-react-app/issues/11770#issuecomment-996200039
+        雑に <a href="https://github.com/RazrFalcon/svgcleaner">svgcleaner</a> を使ったら表示できた．
+
+思つたこと
+    非本質的なところで詰まるの本当に良くない．
+
+明日やること
+    TA の mtg
+    開発の続き
+
+けふの酒
+    アサヒスーパードライ
