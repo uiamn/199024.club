@@ -5,7 +5,7 @@
         !<img src="https://pbs.twimg.com/media/FjDv_9SUcAALSya?format=jpg&name=large" alt="東京国立博物館平成館入り口に国宝展のポスタが飾られてゐる"/>
     進捗
     AtCoder Beginner Contest 280
-        冷えた．
+        一応水パフォなのでレートは少し上がった．
         D: N! mod K を O(sqrt(K)) くらゐで求められれば二分探索でいけさうだと思ひ，適当に調べたら <a href="https://yukicoder.me/problems/no/502">yukicoder の 502</a> がそれっぽいかなと思ったが，実装がバグってどうにもならなかった．
 
 思つたこと
@@ -17,3 +17,4 @@
     バイト
 
 けふの酒
+    翠ジンソーダ
