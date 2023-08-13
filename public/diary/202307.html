@@ -1,0 +1,12 @@
+<!DOCTYPE html><html><head>
+        <meta charset="utf-8">
+        <meta property="og:site_name" content="日記" />
+        <meta property="og:description" content="日記" />
+        <meta property="og:image" content="https://199024.club/test.jpg" />
+        <meta property="og:title" content="日記"/>
+        <meta property="twitter:card" content="summary" />
+        <meta property="twitter:image" content="https://199024.club/test.jpg" />
+        <link rel="icon" href="https://199024.club/test.jpg">
+        <title>日記</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    <a href="#day30">30</a> </head><body><div><div class="entry" id="day30"><h2>■ 2023 年 7 月 30 日</h2><h3>やつたこと</h3><ul><li>精進</li><ul><li>ABC296E</li><ul><li>写像 f を f: {1, ..., N} -> {1, ..., N}; f(n) = A_n で定義する．</li><li>i 回目のゲームでは，与へられた正整数 K_i に対して f^{K_i}(S_i) = i となる S_i が存在すれば，高橋君の勝ちである．</li><li>さて，いま K_i はいくらでも大きく取れるが， K_i が充分大きいとき， f^{K_i} の終集合はかなり小さくなつてゐる．具体的には f から自然に定義される functional graph G を考へたとき， n \in {1, ..., N} に対して次の 2 つが同値になる．</li><ul><li>n が f^{K_i} の終集合に含まれる．</li><li>G 上のある閉路 C が存在し， n \in C である．</li></ul><li>よつて，あとは G のすべての閉路を検出すれば，その閉路上にある数字のみ高橋君は勝つことができる．</li></ul><li>ABC298E</li><ul><li>動的計画法．</li><li>dp[i][j][k] = 高橋くんが地点 i，青木くんが地点 j，にゐて， k==0 なら次に高橋くんがサイコロを振る， k==1 なら次に青木くんがサイコロを振るときの高橋くんの勝率と定義．</li><li>dp[N][x][*] = 1, dp[x][N][*] = 0 (x = 1, ..., N-1) であり，</li><ul><li>dp[i][j][0] = (1/P) \sum_{k=1}^P dp[min(i+k, N)][j][1],</li><li>dp[i][j][1] = (1/Q) \sum_{k=1}^Q dp[i][min(j+k, N)][0].</li></ul><li>dp[A][B][0] が答へ．</li></ul><li>ABC299E</li><ul><li>各頂点から Dijkstra 法を行ふことにより，次のやうに色分けをする．</li><ul><li>p_i から距離が d_i の頂点はすべて白頂点でなくてはならないから，白で塗る．</li><li>逆に，すべての p_i から距離が d_i 以上離れてゐる頂点の色は，白でも黒でも構はない．そこで，このやうな頂点はすべて黒で塗る．</li></ul><li>あとは，各 p_i から距離 d_i の点に黒頂点であるやうなものがあるか確認すれば良い．</li></ul></ul></ul></div></div></body></html>
