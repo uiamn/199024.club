@@ -1,0 +1,7 @@
+やったこと
+    精進
+        前回期待値で冷えたので，期待値 DP を埋めることにする．
+            https://kenkoooo.com/atcoder/#/contest/show/3e870f02-b970-48d6-976d-3d1cfbb776d4?activeTab=Problems
+        ABC194D
+            これは DP なのか・・・？
+            N 個の点のうち， i 個の点が (頂点 1 と) 連結になるまでの期待値を E_i とすると， E_1 = 0, E_i = E_{i-1} + ((N-i+1)/N)^{-1} つまり E_i - E_{i-1} = N / (N-i+1) だから，両辺 i=2 から N の総和を取って E_N = \sum_{i=2}^N N / (N-i+1).
