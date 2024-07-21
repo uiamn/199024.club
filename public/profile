@@ -1,4 +1,4 @@
-現状: 博士前期課程生
+現状: 博士前期課程生→外資系コンサルティング企業
 好きな物: 酒 麻雀 馬
 
 この日記は自作の形式で書かれた text file を Common Lisp で書かれた自作の generator を使つて HTML file にし，それを Netlify といふ hosting service を使つて hosting してゐます．
